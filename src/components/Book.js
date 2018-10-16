@@ -12,6 +12,7 @@ class Book extends Component {
     }
 
 render() {
+    // curious about this method below
     let shelf = this.props.book.shelf ? this.props.book.shelf : 'none'
     return (
         <li key={this.props.id} className="book-grid-item">

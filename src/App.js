@@ -8,7 +8,7 @@ import './App.css'
 class BooksApp extends React.Component {
    constructor(props) {
     super(props);
-    this.updateBookShelf = this.updateBookShelf.bind(this);
+    this.handleBookChange = this.handleBookChange.bind(this);
     this.state = {
       booksReading: [], 
       booksWanted: [], 
@@ -22,12 +22,17 @@ class BooksApp extends React.Component {
 
   getAllBooks() {
     BooksAPI.getAll().then((books) => {
-      this.setState({ myBooks: books });
+      this.setState({ 
+          booksReading: books.filter(book => book.shelf === 'currentlyReading'),
+          booksWanted: books.filter(book => book.shelf === 'wantToRead'), 
+          booksRead: books.filter(book => book.shelf === 'read')
+         });
     });
   }
 
-  updateBookShelf(bookId, oldShelfId, newShelfId) {
-    BooksAPI.update({ id: bookId }, newShelfId).then((books) => {
+  handleBookChange(book, newShelfId) {
+    console.log(arguments)
+    BooksAPI.update(book, newShelfId).then(() => {
       this.getAllBooks();
     });
   }
@@ -44,25 +49,21 @@ class BooksApp extends React.Component {
                     <div className="list-books-content">
                         <div>
                             <BookShelf title="Currently Reading" books={this.state.booksReading} onChange={
-                                (book, newBookshelf) => this.onChange(book, newBookshelf, this.state.booksReading, false)} />
+                                (book, newBookshelf) => this.handleBookChange(book, newBookshelf)} />
                             <BookShelf title="Want to Read" books={this.state.booksWanted} onChange={
-                                (book, newBookshelf) => this.onChange(book, newBookshelf, this.state.booksWanted, false)} />
+                                (book, newBookshelf) => this.handleBookChange(book, newBookshelf)} />
                             <BookShelf title="Read" books={this.state.booksRead} onChange={
-                                (book, newBookshelf) => this.onChange(book, newBookshelf, this.state.booksRead, false)} />
+                                (book, newBookshelf) => this.handleBookChange(book, newBookshelf)} />
                         </div>
                         
                     </div>
-                    <div className="open-search"><Link to="/search">
-                      
-                          <Route path="/search" render={( {history} ) => (
-                            <Search booksShelved={this.state.books} handleBookChange={this.handleBookChange} />
-                          )}/>
-                        
-                      </Link>
+                    <div className="open-search"><Link to="/search"></Link>
                     </div>
                 </div>
                 )} />
-
+                <Route path="/search" render={( {history} ) => (
+                    <Search booksShelved={this.state.books} handleBookChange={this.handleBookChange} />
+                )}/>
                
             </div>
         )
