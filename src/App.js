@@ -20,6 +20,8 @@ class BooksApp extends React.Component {
     this.getAllBooks();
   }
 
+// using VS Code I see some potentially unused sections of code below, but it started working so I left it. Would love feedback on what could be better. 
+
   getAllBooks() {
     BooksAPI.getAll().then((books) => {
       this.setState({ 
