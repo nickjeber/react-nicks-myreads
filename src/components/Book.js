@@ -4,21 +4,22 @@ import PropTypes from 'prop-types'
 class Book extends Component {
     constructor(props){
         super(props);
-        this.handleBookShelfChange = this.handleBookShelfChange.bind(this);
+        this.handleBookChange = this.handleBookChange.bind(this);
     }
 
-    handleBookShelfChange(event) {
-        this.props.handleBookShelfChange(this.props.id, this.props.shelf, event.target.value);
+    handleBookChange(event) {
+        this.props.handleBookChange(this.props.book, event.target.value);
     }
 
 render() {
+    let shelf = this.props.book.shelf ? this.props.book.shelf : 'none'
     return (
         <li key={this.props.id} className="book-grid-item">
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.thumbnail})` }} />
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks.thumbnail})` }} />
                     <div className="book-shelf-changer">
-                        <select value={this.props.shelf} onChange={this.handleBookShelfChange}>
+                        <select value={shelf} onChange={this.handleBookChange}>
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
