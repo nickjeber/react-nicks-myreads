@@ -12,7 +12,6 @@ class Book extends Component {
   }
 
   render() {
-    console.log(this.props.book);
     // curious about this method below
     let shelf = this.props.book.shelf ? this.props.book.shelf : "none";
     let imageURL = this.props.book.imageLinks

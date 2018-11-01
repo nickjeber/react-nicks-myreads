@@ -16,8 +16,6 @@ class BooksApp extends React.Component {
     };
   }
 
-  handleBookChange(params) {}
-
   componentDidMount() {
     this.getAllBooks();
   }
@@ -33,9 +31,8 @@ class BooksApp extends React.Component {
   }
 
   handleBookChange(book, newShelfId) {
-    console.log(arguments);
     BooksAPI.update(book, newShelfId).then(() => {
-      this.getAllBooks();
+      this.getAllBooks(); 
     });
   }
 
@@ -45,7 +42,7 @@ class BooksApp extends React.Component {
       ...this.state.booksWanted,
       ...this.state.booksRead
     ];
-    console.log(allBooks);
+    console.log('All Books', allBooks);
     return (
       <div className="app">
         <Route

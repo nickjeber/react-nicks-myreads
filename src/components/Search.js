@@ -31,21 +31,35 @@ class Search extends Component {
       this.updateQuery(query);
 
       BooksAPI.search(query.trim(), 20).then(books => {
-        console.log(books);
         if (!books.error) {
-          books.map(book => {
-            let found = this.props.allBooks.filter(item => item.id === book.id);
-            if (found.length > 0) {
-              book.shelf = found[0].shelf;
-            }
-          });
-          this.setState({ books });
+          let updatedBooks = Search.getUpdatedBooks(books, this.props.allBooks);
+          this.setState({ books: updatedBooks });
         } else {
           this.setState({ books: [] });
         }
       });
     }
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+
+    let updatedBooks = Search.getUpdatedBooks(prevState.books, nextProps.allBooks);
+
+    return { books: updatedBooks };
+  }
+
+  static getUpdatedBooks(books, allBooks) {
+
+    let updatedBooks = books.map(book => {
+      let found = allBooks.filter(item => item.id === book.id);
+      if (found.length > 0) {
+        book.shelf = found[0].shelf;
+      }
+      return book;
+    });
+
+    return updatedBooks;
+  }
 
   render() {
     const { handleBookChange } = this.props;
